@@ -1,0 +1,104 @@
+{
+  "info": {
+    "name": "FlashSale Checkout API",
+    "_postman_id": "flashsale-task-collection",
+    "description": "Collection for testing Flash Sale System (Hold → Order → Payment Webhook)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "products", "1"]
+        }
+      }
+    },
+    {
+      "name": "Create Hold",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"product_id\": 1,\n    \"qty\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/holds",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "holds"]
+        }
+      }
+    },
+    {
+      "name": "Create Order from Hold",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"hold_id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/orders",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "orders"]
+        }
+      }
+    },
+    {
+      "name": "Payment Webhook (Success)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"idempotency_key\": \"pay-100\",\n    \"order_id\": 1,\n    \"status\": \"success\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/payments/webhook",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "payments", "webhook"]
+        }
+      }
+    },
+    {
+      "name": "Payment Webhook (Failure)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"idempotency_key\": \"pay-101\",\n    \"order_id\": 1,\n    \"status\": \"failure\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/payments/webhook",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "payments", "webhook"]
+        }
+      }
+    }
+  ]
+}
